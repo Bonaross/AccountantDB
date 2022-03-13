@@ -1,0 +1,18 @@
+use AccountantDB;
+go
+
+CREATE OR ALTER PROCEDURE invoices_bru_p1
+@net_val_temp DECIMAL(10,2),
+@vat_val_temp DECIMAL(5,2)
+AS
+BEGIN
+DECLARE @vat DECIMAL(10,2);
+SELECT @vat = 1+@vat_val_temp*0.01;
+
+	UPDATE dbo.INVOICES
+	SET invoices.INV_BRU_VAL = @net_val_temp * @vat
+		WHERE invoices.ID_INVOICES = (SELECT current_value FROM sys.sequences
+													WHERE [name] = 'invoices_id_seq');
+												
+END;
+go
