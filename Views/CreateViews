@@ -1,0 +1,20 @@
+use AccountantDB;
+go
+
+CREATE VIEW v1_LAWYERS_FULL_NAMES
+AS 
+SELECT LAWYERS.ID 'Lawyer ID' , CONCAT (LAWYERS.NAME, ' ', LAWYERS.SURNAME) AS 'Full Name' 
+FROM LAWYERS;
+go
+
+CREATE VIEW v1_INVOICES_PAYMENT AS 
+	SELECT 
+		INVOICES.INV_OWNER							'Invoice Owner'
+		, CONCAT(lawyers.NAME, ' ', lawyers.SURNAME) 'Full Name' 
+		, invoices.INV_NET_VAL						'Net Value'
+		, invoices.INV_VAT							'VAT Value'
+		, invoices.INV_BRU_VAL						'Brutto Value'
+		FROM INVOICES 
+		INNER JOIN LAWYERS
+		ON invoices.inv_owner = lawyers.id;
+go
